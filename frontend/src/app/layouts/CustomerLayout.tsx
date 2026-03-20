@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Badge } from "../components/ui/badge";
-import { Search, Home, Compass, Heart, ShoppingCart, Bell, User, Settings, HelpCircle, Shield, LogOut } from "lucide-react";
+import { Search, Home, Compass, Heart, ShoppingCart, Bell, User, Settings, HelpCircle, Shield, LogOut, DollarSign, Clock, Package } from "lucide-react";
 import { useUser } from "../context/UserContext";
 import { useCart } from "../context/CartContext";
 import { mockProducts, mockServices, mockBusinesses } from "../data/mockData";
@@ -72,7 +72,7 @@ export default function CustomerLayout() {
 
               {/* Search Dropdown */}
               {showSearchDropdown && searchQuery && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/5 shadow-sm rounded-3xl max-h-96 overflow-hidden">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/5 shadow-sm rounded-3xl max-h-96 overflow-y-auto">
                   {searchResults.products.length > 0 && (
                     <div className="p-4 border-b border-black/5">
                       <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3">Products</p>
@@ -237,16 +237,32 @@ export default function CustomerLayout() {
                     <p className="text-[10px] uppercase tracking-widest font-bold text-black/40">Notifications</p>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
-                    <div className="p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300">
-                      <p className="text-sm font-bold mb-1">Payment successful</p>
-                      <p className="text-xs text-black/60 leading-relaxed">Your order for Chocolate Cake has been confirmed</p>
-                      <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">2 hours ago</p>
-                    </div>
-                    <div className="p-6 hover:bg-black/5 transition-all duration-300">
-                      <p className="text-sm font-bold mb-1">Service reminder</p>
-                      <p className="text-xs text-black/60 leading-relaxed">Your Gel Manicure appointment is in 2 days</p>
-                      <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">1 day ago</p>
-                    </div>
+                    <button
+                      onClick={() => navigate("/customer/product/p1")}
+                      className="w-full text-left p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300 flex items-start gap-3"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center shrink-0 mt-0.5">
+                        <DollarSign className="w-4 h-4 text-black/40" strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold mb-1">Payment successful</p>
+                        <p className="text-xs text-black/60 leading-relaxed">Your order for Chocolate Cake has been confirmed</p>
+                        <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">2 hours ago</p>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/customer/service/s1")}
+                      className="w-full text-left p-6 hover:bg-black/5 transition-all duration-300 flex items-start gap-3"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center shrink-0 mt-0.5">
+                        <Clock className="w-4 h-4 text-black/40" strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold mb-1">Service reminder</p>
+                        <p className="text-xs text-black/60 leading-relaxed">Your Gel Manicure appointment is in 2 days</p>
+                        <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">1 day ago</p>
+                      </div>
+                    </button>
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -267,6 +283,10 @@ export default function CustomerLayout() {
                   <DropdownMenuItem onClick={() => navigate("/customer/profile")} className="rounded-xl cursor-pointer">
                     <User className="w-4 h-4 mr-2" strokeWidth={1.5} />
                     Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/customer/my-orders")} className="rounded-xl cursor-pointer">
+                    <Package className="w-4 h-4 mr-2" strokeWidth={1.5} />
+                    Orders & Bookings
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/customer/settings")} className="rounded-xl cursor-pointer">
                     <Settings className="w-4 h-4 mr-2" strokeWidth={1.5} />
