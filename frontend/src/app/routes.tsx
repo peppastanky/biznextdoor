@@ -11,6 +11,7 @@ import Wishlist from "./pages/customer/Wishlist";
 import Cart from "./pages/customer/Cart";
 import Checkout from "./pages/customer/Checkout";
 import CustomerProfile from "./pages/customer/Profile";
+import MyOrders from "./pages/customer/MyOrders";
 import Settings from "./pages/customer/Settings";
 import FAQ from "./pages/customer/FAQ";
 import Safety from "./pages/customer/Safety";
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
       { path: "cart", Component: Cart },
       { path: "checkout", Component: Checkout },
       { path: "profile", Component: CustomerProfile },
+      { path: "my-orders", Component: MyOrders },
       { path: "settings", Component: Settings },
       { path: "faq", Component: FAQ },
       { path: "safety", Component: Safety },
