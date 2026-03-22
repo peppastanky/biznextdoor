@@ -50,7 +50,10 @@ export default function Profile() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Profile</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Account</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Profile</h1>
+      </div>
 
       {/* User Info + Wallet */}
       <div className="grid grid-cols-2 gap-6 mb-8">
@@ -61,7 +64,7 @@ export default function Profile() {
             className="absolute top-4 right-4 rounded-full hover:bg-black/5"
             onClick={() => navigate("/customer/settings")}
           >
-            <Pencil className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+            <Pencil className="w-4 h-4 text-black/30" strokeWidth={1.5} />
           </Button>
           <div className="flex items-center gap-6 justify-center h-full">
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-4xl shrink-0">
@@ -69,20 +72,20 @@ export default function Profile() {
             </div>
             <div>
               <h2 className="text-4xl font-semibold tracking-tight mb-1">{user?.username}</h2>
-              <p className="text-base text-gray-500 mb-1">{user?.email}</p>
-              <p className="text-sm text-gray-400">User since March 2026</p>
+              <p className="text-base text-black/40 mb-1">{user?.email}</p>
+              <p className="text-sm text-black/30">User since March 2026</p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl">Wallet</h2>
-            <Wallet className="w-6 h-6 text-gray-400" />
+            <Wallet className="w-6 h-6 text-black/30" />
           </div>
           <div className="flex items-end gap-3 mb-6">
             <p className="text-4xl">${user?.wallet?.toFixed(2) || "0.00"}</p>
-            <p className="text-gray-600 pb-1">Available Balance</p>
+            <p className="text-black/60 pb-1">Available Balance</p>
           </div>
           <div className="flex gap-3">
             <Button>Top Up</Button>
@@ -93,7 +96,7 @@ export default function Profile() {
 
       {/* Purchase History - Products */}
       <div className="mb-8">
-        <h2 className="text-2xl mb-6">Product Purchase History</h2>
+        <h2 className="text-2xl font-bold tracking-tighter mb-6">Product Purchase History</h2>
         <Card className="divide-y">
           {purchaseHistory
             .filter((item) => item.type === "product")
@@ -109,8 +112,8 @@ export default function Profile() {
                   >
                     {item.name}
                   </button>
-                  <p className="text-sm text-gray-600">{item.businessName}</p>
-                  <p className="text-sm text-gray-500 mt-1">{item.date}</p>
+                  <p className="text-sm text-black/60">{item.businessName}</p>
+                  <p className="text-sm text-black/40 mt-1">{item.date}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-medium mb-2">${item.price}</p>
@@ -126,7 +129,7 @@ export default function Profile() {
 
       {/* Purchase History - Services */}
       <div>
-        <h2 className="text-2xl mb-6">Service Purchase History</h2>
+        <h2 className="text-2xl font-bold tracking-tighter mb-6">Service Purchase History</h2>
         <Card className="divide-y">
           {purchaseHistory
             .filter((item) => item.type === "service")
@@ -142,8 +145,8 @@ export default function Profile() {
                   >
                     {item.name}
                   </button>
-                  <p className="text-sm text-gray-600">{item.businessName}</p>
-                  <p className="text-sm text-gray-500 mt-1">{item.date}</p>
+                  <p className="text-sm text-black/60">{item.businessName}</p>
+                  <p className="text-sm text-black/40 mt-1">{item.date}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-medium mb-2">${item.price}</p>
@@ -160,10 +163,10 @@ export default function Profile() {
       {/* My Reviews */}
       {reviews.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-2xl mb-6">My Reviews</h2>
+          <h2 className="text-2xl font-bold tracking-tighter mb-6">My Reviews</h2>
           <Card className="divide-y">
             {reviews.map((review, index) => (
-              <div key={index} className="p-6">
+              <div key={index} className="p-6 border border-black/5 rounded-3xl shadow-sm">
                 <div className="flex items-center justify-between mb-2">
                   <button
                     onClick={() => navigate(`/customer/${review.type}/${review.id}`)}
@@ -171,7 +174,7 @@ export default function Profile() {
                   >
                     {review.name}
                   </button>
-                  <p className="text-sm text-gray-400">{review.date}</p>
+                  <p className="text-sm text-black/30">{review.date}</p>
                 </div>
                 <div className="flex gap-1 mb-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -183,7 +186,7 @@ export default function Profile() {
                     />
                   ))}
                 </div>
-                {review.text && <p className="text-sm text-gray-600">{review.text}</p>}
+                {review.text && <p className="text-sm text-black/60">{review.text}</p>}
               </div>
             ))}
           </Card>
@@ -202,7 +205,7 @@ export default function Profile() {
             <>
               <DialogHeader>
                 <DialogTitle className="text-2xl tracking-tight">Leave a Review</DialogTitle>
-                {reviewTarget && <p className="text-sm text-gray-500 mt-1">{reviewTarget.name}</p>}
+                {reviewTarget && <p className="text-sm text-black/40 mt-1">{reviewTarget.name}</p>}
               </DialogHeader>
 
               <div className="flex gap-2 my-4">

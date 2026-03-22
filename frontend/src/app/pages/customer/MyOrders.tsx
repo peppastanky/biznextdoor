@@ -30,7 +30,7 @@ export default function MyOrders() {
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="mb-10">
         <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">My Orders</p>
-        <h1 className="text-4xl tracking-tight">Orders & Bookings</h1>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Orders & Bookings</h1>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">

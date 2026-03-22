@@ -96,41 +96,44 @@ export default function Insights() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Insights</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Analytics</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Insights</h1>
+      </div>
 
       {/* Overall Metrics */}
       <div className="grid grid-cols-4 gap-6 mb-12">
-        <Card className="p-6">
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Total Revenue</p>
-            <DollarSign className="w-5 h-5 text-gray-400" />
+            <p className="text-sm text-black/60">Total Revenue</p>
+            <DollarSign className="w-5 h-5 text-black/30" />
           </div>
           <p className="text-3xl mb-1">$30,150</p>
           <p className="text-sm text-green-600">+18% this quarter</p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Total Customers</p>
-            <Users className="w-5 h-5 text-gray-400" />
+            <p className="text-sm text-black/60">Total Customers</p>
+            <Users className="w-5 h-5 text-black/30" />
           </div>
           <p className="text-3xl mb-1">234</p>
-          <p className="text-sm text-gray-600">68 new this month</p>
+          <p className="text-sm text-black/60">68 new this month</p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Profile Visits</p>
-            <Eye className="w-5 h-5 text-gray-400" />
+            <p className="text-sm text-black/60">Profile Visits</p>
+            <Eye className="w-5 h-5 text-black/30" />
           </div>
           <p className="text-3xl mb-1">1,845</p>
           <p className="text-sm text-green-600">+12% this month</p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Conversion Rate</p>
-            <TrendingUp className="w-5 h-5 text-gray-400" />
+            <p className="text-sm text-black/60">Conversion Rate</p>
+            <TrendingUp className="w-5 h-5 text-black/30" />
           </div>
           <p className="text-3xl mb-1">68%</p>
           <p className="text-sm text-green-600">+3% this month</p>
@@ -139,8 +142,8 @@ export default function Insights() {
 
       {/* Charts */}
       <div className="grid grid-cols-2 gap-8 mb-12">
-        <Card className="p-6">
-          <h2 className="text-xl mb-6">Revenue Trend</h2>
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-6">Revenue Trend</h2>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -152,8 +155,8 @@ export default function Insights() {
           </ResponsiveContainer>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-xl mb-6">Customer Acquisition</h2>
+        <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-6">Customer Acquisition</h2>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={customerData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -169,11 +172,11 @@ export default function Insights() {
       </div>
 
       {/* Product/Service Metrics */}
-      <Card className="p-6 mb-12">
-        <h2 className="text-2xl mb-6">Top Performers</h2>
+      <Card className="p-6 mb-8 border border-black/5 rounded-3xl shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tighter mb-6">Top Performers</h2>
         <div className="space-y-4">
           {topProducts.map((item, index) => (
-            <div key={index} className="border border-gray-200 p-6">
+            <div key={index} className="border border-black/5 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-black text-white rounded flex items-center justify-center">
                   {index + 1}
@@ -183,29 +186,29 @@ export default function Insights() {
 
               <div className="grid grid-cols-4 gap-6 text-sm">
                 <div>
-                  <p className="text-gray-600 mb-1">Revenue</p>
+                  <p className="text-black/60 mb-1">Revenue</p>
                   <p className="text-xl font-medium">${item.revenue}</p>
-                  <p className="text-gray-500">
+                  <p className="text-black/40">
                     {((item.revenue / 30150) * 100).toFixed(1)}% of total
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600 mb-1">Quantity Sold</p>
+                  <p className="text-black/60 mb-1">Quantity Sold</p>
                   <p className="text-xl font-medium">{item.quantity}</p>
-                  <p className="text-gray-500">{item.customers} customers</p>
+                  <p className="text-black/40">{item.customers} customers</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 mb-1">Satisfaction</p>
+                  <p className="text-black/60 mb-1">Satisfaction</p>
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-black" />
                     <p className="text-xl font-medium">{item.satisfaction}</p>
                   </div>
-                  <p className="text-gray-500">Highly rated</p>
+                  <p className="text-black/40">Highly rated</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 mb-1">Conversion</p>
+                  <p className="text-black/60 mb-1">Conversion</p>
                   <p className="text-xl font-medium">{item.conversionRate}%</p>
-                  <p className="text-gray-500">
+                  <p className="text-black/40">
                     {item.viewRate}% view, {item.clickRate}% click
                   </p>
                 </div>
@@ -216,14 +219,14 @@ export default function Insights() {
       </Card>
 
       {/* AI Chatbot */}
-      <Card className="p-6">
+      <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <Bot className="w-6 h-6" />
           <h2 className="text-2xl">AI Business Assistant</h2>
         </div>
 
-        <div className="border border-gray-200 rounded-lg overflow-hidden mb-4">
-          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gray-50">
+        <div className="border border-black/5 rounded-3xl overflow-hidden mb-4">
+          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-black/5">
             {chatMessages.map((message, index) => (
               <div
                 key={index}
@@ -233,7 +236,7 @@ export default function Insights() {
                   className={`max-w-[80%] p-4 rounded-lg ${
                     message.role === "user"
                       ? "bg-black text-white"
-                      : "bg-white border border-gray-200"
+                      : "bg-white border border-black/5"
                   }`}
                 >
                   <p className="text-sm">{message.content}</p>
@@ -242,7 +245,7 @@ export default function Insights() {
             ))}
           </div>
 
-          <div className="flex gap-3 p-4 bg-white border-t border-gray-200">
+          <div className="flex gap-3 p-4 bg-white border-t border-black/5">
             <Input
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
@@ -255,7 +258,7 @@ export default function Insights() {
           </div>
         </div>
 
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-black/40 text-center">
           Try asking: "How's my revenue?", "What are my best products?", or "How can I improve?"
         </p>
       </Card>

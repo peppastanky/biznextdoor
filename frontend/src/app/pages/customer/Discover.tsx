@@ -60,6 +60,36 @@ export default function Discover() {
         </TabsList>
 
         <TabsContent value="products" className="space-y-12">
+          {/* Map Section */}
+          <Card className="p-8 border border-black/5 rounded-3xl bg-black/5 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Location</p>
+                <h3 className="text-2xl font-bold tracking-tighter">Businesses Near You</h3>
+              </div>
+              <MapPin className="w-6 h-6 text-black/20" strokeWidth={1.5} />
+            </div>
+            <div className="bg-white border border-black/10 rounded-3xl h-64 flex items-center justify-center text-black/60">
+              <div className="text-center">
+                <MapPin className="w-16 h-16 mx-auto mb-4 text-black/20" strokeWidth={1.5} />
+                <p className="font-bold">Map integration area</p>
+                <p className="text-sm mt-2">Google Maps API can be integrated here</p>
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-4 gap-3">
+              {mockBusinesses.map((business) => (
+                <Link
+                  key={business.id}
+                  to={`/customer/business/${business.id}`}
+                  className="p-4 border border-black/10 bg-white rounded-xl hover:bg-black/5 transition-all duration-300"
+                >
+                  <p className="text-sm font-bold mb-1">{business.name}</p>
+                  <p className="text-xs text-black/40">{business.address.split(",")[1]}</p>
+                </Link>
+              ))}
+            </div>
+          </Card>
+
           {/* Filters */}
           <div className="flex gap-4">
             <div className="flex-1 relative">
@@ -95,36 +125,6 @@ export default function Discover() {
               </SelectContent>
             </Select>
           </div>
-
-          {/* Map Section */}
-          <Card className="p-8 border border-black/5 rounded-3xl bg-black/5 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Location</p>
-                <h3 className="text-2xl font-bold tracking-tighter">Businesses Near You</h3>
-              </div>
-              <MapPin className="w-6 h-6 text-black/20" strokeWidth={1.5} />
-            </div>
-            <div className="bg-white border border-black/10 rounded-3xl h-64 flex items-center justify-center text-black/60">
-              <div className="text-center">
-                <MapPin className="w-16 h-16 mx-auto mb-4 text-black/20" strokeWidth={1.5} />
-                <p className="font-bold">Map integration area</p>
-                <p className="text-sm mt-2">Google Maps API can be integrated here</p>
-              </div>
-            </div>
-            <div className="mt-6 grid grid-cols-4 gap-3">
-              {mockBusinesses.map((business) => (
-                <Link
-                  key={business.id}
-                  to={`/customer/business/${business.id}`}
-                  className="p-4 border border-black/10 bg-white rounded-xl hover:bg-black/5 transition-all duration-300"
-                >
-                  <p className="text-sm font-bold mb-1">{business.name}</p>
-                  <p className="text-xs text-black/40">{business.address.split(",")[1]}</p>
-                </Link>
-              ))}
-            </div>
-          </Card>
 
           {/* Products Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -170,6 +170,36 @@ export default function Discover() {
         </TabsContent>
 
         <TabsContent value="services" className="space-y-12">
+          {/* Map Section */}
+          <Card className="p-8 border border-black/5 rounded-3xl bg-black/5 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Location</p>
+                <h3 className="text-2xl font-bold tracking-tighter">Businesses Near You</h3>
+              </div>
+              <MapPin className="w-6 h-6 text-black/20" strokeWidth={1.5} />
+            </div>
+            <div className="bg-white border border-black/10 rounded-3xl h-64 flex items-center justify-center text-black/60">
+              <div className="text-center">
+                <MapPin className="w-16 h-16 mx-auto mb-4 text-black/20" strokeWidth={1.5} />
+                <p className="font-bold">Map integration area</p>
+                <p className="text-sm mt-2">Google Maps API can be integrated here</p>
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-4 gap-3">
+              {mockBusinesses.map((business) => (
+                <Link
+                  key={business.id}
+                  to={`/customer/business/${business.id}`}
+                  className="p-4 border border-black/10 bg-white rounded-xl hover:bg-black/5 transition-all duration-300"
+                >
+                  <p className="text-sm font-bold mb-1">{business.name}</p>
+                  <p className="text-xs text-black/40">{business.address.split(",")[1]}</p>
+                </Link>
+              ))}
+            </div>
+          </Card>
+
           {/* Filters */}
           <div className="flex gap-4">
             <div className="flex-1 relative">
@@ -205,36 +235,6 @@ export default function Discover() {
               </SelectContent>
             </Select>
           </div>
-
-          {/* Map Section */}
-          <Card className="p-8 border border-black/5 rounded-3xl bg-black/5 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Location</p>
-                <h3 className="text-2xl font-bold tracking-tighter">Businesses Near You</h3>
-              </div>
-              <MapPin className="w-6 h-6 text-black/20" strokeWidth={1.5} />
-            </div>
-            <div className="bg-white border border-black/10 rounded-3xl h-64 flex items-center justify-center text-black/60">
-              <div className="text-center">
-                <MapPin className="w-16 h-16 mx-auto mb-4 text-black/20" strokeWidth={1.5} />
-                <p className="font-bold">Map integration area</p>
-                <p className="text-sm mt-2">Google Maps API can be integrated here</p>
-              </div>
-            </div>
-            <div className="mt-6 grid grid-cols-4 gap-3">
-              {mockBusinesses.map((business) => (
-                <Link
-                  key={business.id}
-                  to={`/customer/business/${business.id}`}
-                  className="p-4 border border-black/10 bg-white rounded-xl hover:bg-black/5 transition-all duration-300"
-                >
-                  <p className="text-sm font-bold mb-1">{business.name}</p>
-                  <p className="text-xs text-black/40">{business.address.split(",")[1]}</p>
-                </Link>
-              ))}
-            </div>
-          </Card>
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

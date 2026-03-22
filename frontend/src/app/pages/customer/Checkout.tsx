@@ -50,10 +50,10 @@ export default function Checkout() {
         <Card className="p-12 max-w-md text-center">
           <CheckCircle2 className="w-16 h-16 mx-auto mb-4 text-green-600" />
           <h2 className="text-3xl mb-3">Payment Successful!</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-black/60 mb-6">
             Your order has been confirmed. You will receive a notification with the details.
           </p>
-          <p className="text-sm text-gray-500">Redirecting to home...</p>
+          <p className="text-sm text-black/40">Redirecting to home...</p>
         </Card>
       </div>
     );
@@ -61,13 +61,16 @@ export default function Checkout() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Checkout</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Almost there</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Checkout</h1>
+      </div>
 
       <div className="grid grid-cols-3 gap-8">
         <div className="col-span-2 space-y-6">
           {/* Order Summary */}
-          <Card className="p-6">
-            <h2 className="text-xl mb-4">Order Items</h2>
+          <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
+            <h2 className="text-2xl font-bold tracking-tighter mb-4">Order Items</h2>
             <div className="space-y-4">
               {cart.map((item) => (
                 <div key={item.id} className="flex gap-4 pb-4 border-b last:border-0">
@@ -78,13 +81,13 @@ export default function Checkout() {
                   />
                   <div className="flex-1">
                     <h3 className="mb-1">{item.name}</h3>
-                    <p className="text-sm text-gray-600">{item.businessName}</p>
+                    <p className="text-sm text-black/60">{item.businessName}</p>
                     {item.timeslot && (
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-black/60 mt-1">
                         Timeslot: {item.timeslot}
                       </p>
                     )}
-                    <p className="text-sm text-gray-600 mt-1">Qty: {item.quantity}</p>
+                    <p className="text-sm text-black/60 mt-1">Qty: {item.quantity}</p>
                   </div>
                   <p className="font-medium">
                     ${(item.price * item.quantity).toFixed(2)}
@@ -95,15 +98,15 @@ export default function Checkout() {
           </Card>
 
           {/* Payment Method */}
-          <Card className="p-6">
-            <h2 className="text-xl mb-4">Payment Method</h2>
+          <Card className="p-6 border border-black/5 rounded-3xl shadow-sm">
+            <h2 className="text-2xl font-bold tracking-tighter mb-4">Payment Method</h2>
             <div className="space-y-4">
-              <div className="border border-gray-300 p-4 bg-gray-50">
+              <div className="border border-black/8 p-4 bg-black/5 rounded-2xl">
                 <div className="flex items-center gap-3">
                   <Wallet className="w-5 h-5" />
                   <div className="flex-1">
                     <p className="font-medium">Wallet Balance</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-black/60">
                       Available: ${user?.wallet?.toFixed(2) || "0.00"}
                     </p>
                   </div>
@@ -123,15 +126,15 @@ export default function Checkout() {
         {/* Payment Summary */}
         <div>
           <Card className="p-6 sticky top-24">
-            <h2 className="text-xl mb-6">Payment Summary</h2>
+            <h2 className="text-2xl font-bold tracking-tighter mb-6">Payment Summary</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal</span>
+                <span className="text-black/60">Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Service Fee</span>
+                <span className="text-black/60">Service Fee</span>
                 <span>${serviceFee.toFixed(2)}</span>
               </div>
               <div className="border-t pt-3 flex justify-between text-lg">

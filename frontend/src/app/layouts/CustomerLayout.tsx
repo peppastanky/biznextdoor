@@ -1,4 +1,5 @@
 import { Outlet, Link, useNavigate } from "react-router";
+import BackButton from "../components/BackButton";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -314,6 +315,7 @@ export default function CustomerLayout() {
 
       {/* Main Content */}
       <main className="pt-[73px]">
+        <BackButton />
         <Outlet />
       </main>
     </div>

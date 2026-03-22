@@ -49,6 +49,13 @@ export const mockBusinesses = [
   },
 ];
 
+// Helper to get a date string N days from today
+const d = (offset: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toISOString().split("T")[0];
+};
+
 export const mockProducts = [
   {
     id: "p1",
@@ -60,7 +67,12 @@ export const mockProducts = [
     businessId: "b1",
     businessName: "Sweet Delights Bakery",
     quantity: 10,
-    timeslots: ["10:00 AM", "2:00 PM", "5:00 PM"],
+    timeslots: {
+      [d(1)]: ["10:00 AM", "2:00 PM", "5:00 PM"],
+      [d(2)]: ["11:00 AM", "3:00 PM"],
+      [d(4)]: ["10:00 AM", "1:00 PM", "4:00 PM"],
+      [d(6)]: ["2:00 PM", "5:00 PM"],
+    },
     rating: 4.9,
     reviews: 45,
   },
@@ -74,7 +86,11 @@ export const mockProducts = [
     businessId: "b2",
     businessName: "Crafted with Care",
     quantity: 5,
-    timeslots: ["9:00 AM", "1:00 PM", "6:00 PM"],
+    timeslots: {
+      [d(1)]: ["9:00 AM", "1:00 PM"],
+      [d(3)]: ["11:00 AM", "3:00 PM", "6:00 PM"],
+      [d(5)]: ["10:00 AM", "2:00 PM"],
+    },
     rating: 5.0,
     reviews: 23,
   },
@@ -88,7 +104,11 @@ export const mockProducts = [
     businessId: "b4",
     businessName: "Green Thumb Gardens",
     quantity: 15,
-    timeslots: ["11:00 AM", "3:00 PM", "7:00 PM"],
+    timeslots: {
+      [d(2)]: ["11:00 AM", "3:00 PM", "7:00 PM"],
+      [d(3)]: ["10:00 AM", "4:00 PM"],
+      [d(7)]: ["11:00 AM", "2:00 PM", "5:00 PM"],
+    },
     rating: 4.7,
     reviews: 31,
   },
@@ -102,7 +122,12 @@ export const mockProducts = [
     businessId: "b1",
     businessName: "Sweet Delights Bakery",
     quantity: 20,
-    timeslots: ["8:00 AM", "12:00 PM", "4:00 PM"],
+    timeslots: {
+      [d(1)]: ["8:00 AM", "12:00 PM", "4:00 PM"],
+      [d(2)]: ["9:00 AM", "1:00 PM"],
+      [d(3)]: ["8:00 AM", "11:00 AM", "3:00 PM"],
+      [d(5)]: ["9:00 AM", "12:00 PM"],
+    },
     rating: 4.8,
     reviews: 67,
   },
@@ -116,7 +141,10 @@ export const mockProducts = [
     businessId: "b2",
     businessName: "Crafted with Care",
     quantity: 3,
-    timeslots: ["10:00 AM", "2:00 PM", "5:00 PM"],
+    timeslots: {
+      [d(3)]: ["10:00 AM", "2:00 PM"],
+      [d(6)]: ["11:00 AM", "5:00 PM"],
+    },
     rating: 4.9,
     reviews: 18,
   },
@@ -130,7 +158,11 @@ export const mockProducts = [
     businessId: "b4",
     businessName: "Green Thumb Gardens",
     quantity: 8,
-    timeslots: ["10:00 AM", "2:00 PM", "6:00 PM"],
+    timeslots: {
+      [d(1)]: ["10:00 AM", "2:00 PM"],
+      [d(4)]: ["11:00 AM", "3:00 PM", "6:00 PM"],
+      [d(5)]: ["10:00 AM", "4:00 PM"],
+    },
     rating: 4.8,
     reviews: 29,
   },
@@ -146,7 +178,13 @@ export const mockServices = [
     image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400",
     businessId: "b3",
     businessName: "Bella Nails Studio",
-    timeslots: ["9:00 AM", "11:00 AM", "2:00 PM", "4:00 PM", "6:00 PM"],
+    timeslots: {
+      [d(1)]: ["9:00 AM", "11:00 AM", "2:00 PM", "4:00 PM"],
+      [d(2)]: ["10:00 AM", "1:00 PM", "6:00 PM"],
+      [d(4)]: ["9:00 AM", "2:00 PM", "4:00 PM"],
+      [d(5)]: ["11:00 AM", "3:00 PM"],
+      [d(7)]: ["9:00 AM", "11:00 AM", "2:00 PM"],
+    },
     rating: 4.9,
     reviews: 156,
   },
@@ -159,7 +197,11 @@ export const mockServices = [
     image: "https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=400",
     businessId: "b3",
     businessName: "Bella Nails Studio",
-    timeslots: ["10:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"],
+    timeslots: {
+      [d(1)]: ["10:00 AM", "1:00 PM", "5:00 PM"],
+      [d(3)]: ["11:00 AM", "3:00 PM"],
+      [d(6)]: ["10:00 AM", "2:00 PM", "5:00 PM"],
+    },
     rating: 4.8,
     reviews: 134,
   },
@@ -172,7 +214,11 @@ export const mockServices = [
     image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400",
     businessId: "b2",
     businessName: "Crafted with Care",
-    timeslots: ["10:00 AM", "2:00 PM", "4:00 PM"],
+    timeslots: {
+      [d(2)]: ["10:00 AM", "2:00 PM"],
+      [d(5)]: ["11:00 AM", "4:00 PM"],
+      [d(7)]: ["10:00 AM", "3:00 PM"],
+    },
     rating: 5.0,
     reviews: 42,
   },
@@ -185,7 +231,12 @@ export const mockServices = [
     image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400",
     businessId: "b3",
     businessName: "Bella Nails Studio",
-    timeslots: ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM"],
+    timeslots: {
+      [d(1)]: ["9:00 AM", "12:00 PM", "6:00 PM"],
+      [d(3)]: ["10:00 AM", "3:00 PM"],
+      [d(4)]: ["12:00 PM", "4:00 PM"],
+      [d(6)]: ["9:00 AM", "1:00 PM", "5:00 PM"],
+    },
     rating: 4.9,
     reviews: 98,
   },

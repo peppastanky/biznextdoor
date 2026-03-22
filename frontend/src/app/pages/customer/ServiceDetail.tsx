@@ -2,17 +2,18 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { Star, Heart, MapPin, Calendar, Store } from "lucide-react";
 import { mockServices, mockBusinesses } from "../../data/mockData";
 import { useCart } from "../../context/CartContext";
 import { toast } from "sonner";
+import DateTimePicker from "../../components/DateTimePicker";
 
 export default function ServiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
-  const [selectedTimeslot, setSelectedTimeslot] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
 
   const service = mockServices.find((s) => s.id === id);
   const business = mockBusinesses.find((b) => b.id === service?.businessId);
@@ -30,8 +31,8 @@ export default function ServiceDetail() {
   }
 
   const handleBook = () => {
-    if (!selectedTimeslot) {
-      toast.error("Please select a timeslot");
+    if (!selectedDate || !selectedTime) {
+      toast.error("Please select a date and time");
       return;
     }
 
@@ -43,7 +44,7 @@ export default function ServiceDetail() {
       businessName: service.businessName,
       quantity: 1,
       type: "service",
-      timeslot: selectedTimeslot,
+      timeslot: `${selectedDate} ${selectedTime}`,
     });
 
     toast.success("Service added to cart");
@@ -67,10 +68,10 @@ export default function ServiceDetail() {
         <div>
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h1 className="text-4xl mb-2">{service.name}</h1>
+              <h1 className="text-4xl font-bold tracking-tighter mb-2">{service.name}</h1>
               <Link
                 to={`/customer/business/${business.id}`}
-                className="text-gray-600 hover:underline flex items-center gap-2"
+                className="text-black/60 hover:underline flex items-center gap-2"
               >
                 <Store className="w-4 h-4" />
                 {service.businessName}
@@ -92,8 +93,8 @@ export default function ServiceDetail() {
               <Star className="w-4 h-4 fill-black" />
               <span className="font-medium">{service.rating}</span>
             </div>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-600">{service.reviews} reviews</span>
+            <span className="text-black/30">|</span>
+            <span className="text-black/60">{service.reviews} reviews</span>
           </div>
 
           <p className="text-3xl mb-8">${service.price}</p>
@@ -101,36 +102,30 @@ export default function ServiceDetail() {
           <div className="space-y-6 mb-8">
             <div>
               <h3 className="mb-2">Description</h3>
-              <p className="text-gray-600">{service.description}</p>
+              <p className="text-black/60">{service.description}</p>
             </div>
 
             <div>
               <h3 className="mb-2">Category</h3>
-              <p className="text-gray-600">{service.category}</p>
+              <p className="text-black/60">{service.category}</p>
             </div>
 
             <div>
               <h3 className="mb-2">Location</h3>
-              <p className="text-gray-600 flex items-center gap-2">
+              <p className="text-black/60 flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 {business.address}
               </p>
             </div>
 
             <div>
-              <h3 className="mb-2">Available Timeslots</h3>
-              <Select value={selectedTimeslot} onValueChange={setSelectedTimeslot}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a timeslot" />
-                </SelectTrigger>
-                <SelectContent>
-                  {service.timeslots.map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <h3 className="mb-3">Appointment Date & Time</h3>
+              <DateTimePicker
+                timeslots={service.timeslots}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                onSelect={(date, time) => { setSelectedDate(date); setSelectedTime(time); }}
+              />
             </div>
           </div>
 
@@ -155,10 +150,10 @@ export default function ServiceDetail() {
 
       {/* Reviews */}
       <div>
-        <h2 className="text-3xl mb-6">Customer Reviews</h2>
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">Customer Reviews</h2>
         <div className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i} className="p-6">
+            <Card key={i} className="p-6 border border-black/5 rounded-3xl shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <img
                   src={`https://images.unsplash.com/photo-${1494790108377 + i}?w=100`}
@@ -173,9 +168,9 @@ export default function ServiceDetail() {
                     ))}
                   </div>
                 </div>
-                <span className="text-sm text-gray-500">{i} days ago</span>
+                <span className="text-sm text-black/40">{i} days ago</span>
               </div>
-              <p className="text-gray-600">
+              <p className="text-black/60">
                 Amazing service! Very professional and exceeded expectations. Will
                 definitely book again.
               </p>

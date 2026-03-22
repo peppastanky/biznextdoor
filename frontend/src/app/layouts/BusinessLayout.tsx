@@ -1,4 +1,5 @@
 import { Outlet, Link, useNavigate } from "react-router";
+import BackButton from "../components/BackButton";
 import { Button } from "../components/ui/button";
 import {
   DropdownMenu,
@@ -140,6 +141,7 @@ export default function BusinessLayout() {
 
       {/* Main Content */}
       <main className="pt-[73px]">
+        <BackButton />
         <Outlet />
       </main>
     </div>
