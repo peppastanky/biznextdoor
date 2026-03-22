@@ -32,114 +32,117 @@ export default function Settings() {
       return;
     }
     toast.success("Password changed successfully");
-    setFormData({
-      ...formData,
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    setFormData({ ...formData, currentPassword: "", newPassword: "", confirmPassword: "" });
   };
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Settings</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Account</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Settings</h1>
+      </div>
 
       {/* Profile Settings */}
-      <Card className="p-8 mb-8">
-        <h2 className="text-2xl mb-6">Profile Settings</h2>
+      <Card className="p-8 mb-6 border border-black/5 rounded-3xl shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tighter mb-8">Profile Settings</h2>
         <form onSubmit={handleUpdateProfile} className="space-y-6">
           <div>
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username" className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+              Username
+            </Label>
             <Input
               id="username"
               name="username"
               value={formData.username}
               onChange={handleChange}
+              className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300"
             />
           </div>
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+              Email
+            </Label>
             <Input
               id="email"
               name="email"
               type="email"
               value={formData.email}
               onChange={handleChange}
+              className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300"
             />
           </div>
-          <Button type="submit">Save Changes</Button>
+          <Button type="submit" className="rounded-full bg-black text-white hover:bg-black/90 py-6 px-8 transition-all duration-300 hover:scale-[1.02]">
+            Save Changes
+          </Button>
         </form>
       </Card>
 
       {/* Password Settings */}
-      <Card className="p-8 mb-8">
-        <h2 className="text-2xl mb-6">Change Password</h2>
+      <Card className="p-8 mb-6 border border-black/5 rounded-3xl shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tighter mb-8">Change Password</h2>
         <form onSubmit={handleChangePassword} className="space-y-6">
           <div>
-            <Label htmlFor="currentPassword">Current Password</Label>
+            <Label htmlFor="currentPassword" className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+              Current Password
+            </Label>
             <Input
               id="currentPassword"
               name="currentPassword"
               type="password"
               value={formData.currentPassword}
               onChange={handleChange}
+              className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300"
             />
           </div>
           <div>
-            <Label htmlFor="newPassword">New Password</Label>
+            <Label htmlFor="newPassword" className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+              New Password
+            </Label>
             <Input
               id="newPassword"
               name="newPassword"
               type="password"
               value={formData.newPassword}
               onChange={handleChange}
+              className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300"
             />
           </div>
           <div>
-            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+            <Label htmlFor="confirmPassword" className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+              Confirm New Password
+            </Label>
             <Input
               id="confirmPassword"
               name="confirmPassword"
               type="password"
               value={formData.confirmPassword}
               onChange={handleChange}
+              className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300"
             />
           </div>
-          <Button type="submit">Update Password</Button>
+          <Button type="submit" className="rounded-full bg-black text-white hover:bg-black/90 py-6 px-8 transition-all duration-300 hover:scale-[1.02]">
+            Update Password
+          </Button>
         </form>
       </Card>
 
       {/* Notification Settings */}
-      <Card className="p-8">
-        <h2 className="text-2xl mb-6">Notification Preferences</h2>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">Order Updates</p>
-              <p className="text-sm text-gray-600">
-                Receive notifications about your orders
-              </p>
+      <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tighter mb-8">Notification Preferences</h2>
+        <div className="space-y-6">
+          {[
+            { label: "Order Updates", desc: "Receive notifications about your orders", defaultChecked: true },
+            { label: "Service Reminders", desc: "Get reminded about upcoming service appointments", defaultChecked: true },
+            { label: "Promotional Emails", desc: "Receive special offers and promotions", defaultChecked: false },
+          ].map(({ label, desc, defaultChecked }) => (
+            <div key={label} className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold">{label}</p>
+                <p className="text-xs text-black/40 mt-0.5">{desc}</p>
+              </div>
+              <input type="checkbox" defaultChecked={defaultChecked} className="w-5 h-5 accent-black" />
             </div>
-            <input type="checkbox" defaultChecked className="w-5 h-5" />
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">Service Reminders</p>
-              <p className="text-sm text-gray-600">
-                Get reminded about upcoming service appointments
-              </p>
-            </div>
-            <input type="checkbox" defaultChecked className="w-5 h-5" />
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">Promotional Emails</p>
-              <p className="text-sm text-gray-600">
-                Receive special offers and promotions
-              </p>
-            </div>
-            <input type="checkbox" className="w-5 h-5" />
-          </div>
+          ))}
         </div>
       </Card>
     </div>

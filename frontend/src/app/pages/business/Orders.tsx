@@ -63,19 +63,22 @@ export default function Orders() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Orders</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Manage</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Orders</h1>
+      </div>
 
       <Tabs defaultValue="all">
-        <TabsList className="mb-8">
-          <TabsTrigger value="all">All Orders ({orders.length})</TabsTrigger>
-          <TabsTrigger value="products">Products ({productOrders.length})</TabsTrigger>
-          <TabsTrigger value="services">Services ({serviceOrders.length})</TabsTrigger>
+        <TabsList className="bg-black/5 p-2 rounded-full mb-8">
+          <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm px-6">All Orders ({orders.length})</TabsTrigger>
+          <TabsTrigger value="products" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm px-6">Products ({productOrders.length})</TabsTrigger>
+          <TabsTrigger value="services" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm px-6">Services ({serviceOrders.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
           {orders.length === 0 ? (
-            <Card className="p-16 text-center text-gray-500">
-              <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <Card className="p-16 text-center text-black/40">
+              <Package className="w-16 h-16 mx-auto mb-4 text-black/20" />
               <h2 className="text-2xl mb-2">No pending orders</h2>
               <p>New orders will appear here</p>
             </Card>
@@ -84,7 +87,7 @@ export default function Orders() {
               {orders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6">
+                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-3">
@@ -96,7 +99,7 @@ export default function Orders() {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">
+                        <div className="grid grid-cols-2 gap-3 text-sm text-black/60">
                           <div>
                             <p className="mb-1">
                               <span className="font-medium">Customer:</span> @{order.customer}
@@ -135,8 +138,8 @@ export default function Orders() {
 
         <TabsContent value="products">
           {productOrders.length === 0 ? (
-            <Card className="p-16 text-center text-gray-500">
-              <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <Card className="p-16 text-center text-black/40">
+              <Package className="w-16 h-16 mx-auto mb-4 text-black/20" />
               <h2 className="text-2xl mb-2">No product orders</h2>
               <p>Product orders will appear here</p>
             </Card>
@@ -145,12 +148,12 @@ export default function Orders() {
               {productOrders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6">
+                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg mb-3">{order.item}</h3>
 
-                        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">
+                        <div className="grid grid-cols-2 gap-3 text-sm text-black/60">
                           <div>
                             <p className="mb-1">
                               <span className="font-medium">Customer:</span> @{order.customer}
@@ -189,8 +192,8 @@ export default function Orders() {
 
         <TabsContent value="services">
           {serviceOrders.length === 0 ? (
-            <Card className="p-16 text-center text-gray-500">
-              <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <Card className="p-16 text-center text-black/40">
+              <Calendar className="w-16 h-16 mx-auto mb-4 text-black/20" />
               <h2 className="text-2xl mb-2">No service bookings</h2>
               <p>Service bookings will appear here</p>
             </Card>
@@ -199,12 +202,12 @@ export default function Orders() {
               {serviceOrders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6">
+                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg mb-3">{order.item}</h3>
 
-                        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">
+                        <div className="grid grid-cols-2 gap-3 text-sm text-black/60">
                           <div>
                             <p className="mb-1">
                               <span className="font-medium">Customer:</span> @{order.customer}

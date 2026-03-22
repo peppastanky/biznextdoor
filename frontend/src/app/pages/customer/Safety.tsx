@@ -6,20 +6,21 @@ export default function Safety() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-12">
         <Shield className="w-16 h-16 mx-auto mb-4 text-gray-800" />
-        <h1 className="text-4xl tracking-tight mb-4">Safety Guidelines</h1>
-        <p className="text-gray-600">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3">Guidelines</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight mb-4">Safety Guidelines</h1>
+        <p className="text-black/60">
           Your safety and security are our top priorities
         </p>
       </div>
 
       <div className="space-y-8">
         {/* Safe Shopping */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Safe Shopping Practices</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Safe Shopping Practices</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Always verify business details before making a purchase</li>
                 <li>• Look for the verified badge on business profiles</li>
                 <li>• Read reviews and ratings from other customers</li>
@@ -32,12 +33,12 @@ export default function Safety() {
         </Card>
 
         {/* Meeting Safely */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <Users className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Meeting Safely</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Meeting Safely</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Collect products during daylight hours when possible</li>
                 <li>• Inform a friend or family member of your plans</li>
                 <li>• Meet at the registered business address only</li>
@@ -50,12 +51,12 @@ export default function Safety() {
         </Card>
 
         {/* Privacy & Data */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <Lock className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Privacy & Data Protection</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Privacy & Data Protection</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Never share your password with anyone</li>
                 <li>• Keep your personal information private</li>
                 <li>• Only communicate through the platform</li>
@@ -68,12 +69,12 @@ export default function Safety() {
         </Card>
 
         {/* Payment Security */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <FileText className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Payment Security</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Payment Security</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Always use the in-app wallet for payments</li>
                 <li>• Never make payments outside the platform</li>
                 <li>• Monitor your wallet transactions regularly</li>
@@ -86,12 +87,12 @@ export default function Safety() {
         </Card>
 
         {/* Red Flags */}
-        <Card className="p-8 bg-red-50 border-red-200">
+        <Card className="p-8 bg-red-50 border border-red-200 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <AlertTriangle className="w-6 h-6 flex-shrink-0 text-red-600" />
             <div>
-              <h2 className="text-2xl mb-3">Red Flags to Watch For</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Red Flags to Watch For</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Requests for payment outside the platform</li>
                 <li>• Businesses with no reviews or verification</li>
                 <li>• Pressure to make immediate decisions</li>
@@ -104,25 +105,25 @@ export default function Safety() {
         </Card>
 
         {/* Reporting */}
-        <Card className="p-8">
-          <h2 className="text-2xl mb-4">Report Concerns</h2>
-          <p className="text-gray-600 mb-4">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Report Concerns</h2>
+          <p className="text-black/60 mb-4">
             If you encounter any safety issues, suspicious behavior, or violations of our
             guidelines, please report them immediately:
           </p>
-          <div className="space-y-2 text-gray-600">
+          <div className="space-y-2 text-black/60">
             <p>Email: safety@biznextdoor.com</p>
             <p>Response time: Within 24 hours</p>
           </div>
         </Card>
 
         {/* Community Standards */}
-        <Card className="p-8 bg-gray-50">
-          <h2 className="text-2xl mb-4">Community Standards</h2>
-          <p className="text-gray-600">
+        <Card className="p-8 bg-black/5 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Community Standards</h2>
+          <p className="text-black/60">
             BizNextDoor is built on trust and respect. We expect all users to:
           </p>
-          <ul className="space-y-2 text-gray-600 mt-4">
+          <ul className="space-y-2 text-black/60 mt-4">
             <li>• Treat others with respect and courtesy</li>
             <li>• Provide accurate information</li>
             <li>• Honor commitments and agreements</li>

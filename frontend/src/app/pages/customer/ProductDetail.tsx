@@ -2,17 +2,18 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { Star, Heart, MapPin, ShoppingCart, Store } from "lucide-react";
 import { mockProducts, mockBusinesses } from "../../data/mockData";
 import { useCart } from "../../context/CartContext";
 import { toast } from "sonner";
+import DateTimePicker from "../../components/DateTimePicker";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
-  const [selectedTimeslot, setSelectedTimeslot] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   const product = mockProducts.find((p) => p.id === id);
@@ -31,8 +32,8 @@ export default function ProductDetail() {
   }
 
   const handleAddToCart = () => {
-    if (!selectedTimeslot) {
-      toast.error("Please select a collection timeslot");
+    if (!selectedDate || !selectedTime) {
+      toast.error("Please select a collection date and time");
       return;
     }
 
@@ -44,7 +45,7 @@ export default function ProductDetail() {
       businessName: product.businessName,
       quantity,
       type: "product",
-      timeslot: selectedTimeslot,
+      timeslot: `${selectedDate} ${selectedTime}`,
     });
 
     toast.success("Added to cart");
@@ -68,10 +69,10 @@ export default function ProductDetail() {
         <div>
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h1 className="text-4xl mb-2">{product.name}</h1>
+              <h1 className="text-4xl font-bold tracking-tighter mb-2">{product.name}</h1>
               <Link
                 to={`/customer/business/${business.id}`}
-                className="text-gray-600 hover:underline flex items-center gap-2"
+                className="text-black/60 hover:underline flex items-center gap-2"
               >
                 <Store className="w-4 h-4" />
                 {product.businessName}
@@ -93,8 +94,8 @@ export default function ProductDetail() {
               <Star className="w-4 h-4 fill-black" />
               <span className="font-medium">{product.rating}</span>
             </div>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-600">{product.reviews} reviews</span>
+            <span className="text-black/30">|</span>
+            <span className="text-black/60">{product.reviews} reviews</span>
           </div>
 
           <p className="text-3xl mb-8">${product.price}</p>
@@ -102,17 +103,17 @@ export default function ProductDetail() {
           <div className="space-y-6 mb-8">
             <div>
               <h3 className="mb-2">Description</h3>
-              <p className="text-gray-600">{product.description}</p>
+              <p className="text-black/60">{product.description}</p>
             </div>
 
             <div>
               <h3 className="mb-2">Category</h3>
-              <p className="text-gray-600">{product.category}</p>
+              <p className="text-black/60">{product.category}</p>
             </div>
 
             <div>
               <h3 className="mb-2">Location</h3>
-              <p className="text-gray-600 flex items-center gap-2">
+              <p className="text-black/60 flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 {business.address}
               </p>
@@ -120,23 +121,17 @@ export default function ProductDetail() {
 
             <div>
               <h3 className="mb-2">Available Quantity</h3>
-              <p className="text-gray-600">{product.quantity} items</p>
+              <p className="text-black/60">{product.quantity} items</p>
             </div>
 
             <div>
-              <h3 className="mb-2">Collection Timeslot</h3>
-              <Select value={selectedTimeslot} onValueChange={setSelectedTimeslot}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a timeslot" />
-                </SelectTrigger>
-                <SelectContent>
-                  {product.timeslots.map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <h3 className="mb-3">Collection Date & Time</h3>
+              <DateTimePicker
+                timeslots={product.timeslots}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                onSelect={(date, time) => { setSelectedDate(date); setSelectedTime(time); }}
+              />
             </div>
 
             <div>
@@ -182,10 +177,10 @@ export default function ProductDetail() {
 
       {/* Reviews */}
       <div>
-        <h2 className="text-3xl mb-6">Customer Reviews</h2>
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">Customer Reviews</h2>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="p-6">
+            <Card key={i} className="p-6 border border-black/5 rounded-3xl shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <img
                   src={`https://images.unsplash.com/photo-${1494790108377 + i}?w=100`}
@@ -200,9 +195,9 @@ export default function ProductDetail() {
                     ))}
                   </div>
                 </div>
-                <span className="text-sm text-gray-500">{i} days ago</span>
+                <span className="text-sm text-black/40">{i} days ago</span>
               </div>
-              <p className="text-gray-600">
+              <p className="text-black/60">
                 Excellent product! Highly recommend. The quality exceeded my
                 expectations.
               </p>

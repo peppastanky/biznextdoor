@@ -5,21 +5,20 @@ export default function BusinessSafety() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-12">
-        <Shield className="w-16 h-16 mx-auto mb-4 text-gray-800" />
-        <h1 className="text-4xl tracking-tight mb-4">Business Safety Guidelines</h1>
-        <p className="text-gray-600">
-          Best practices for running a safe and successful business on our platform
-        </p>
+        <Shield className="w-16 h-16 mx-auto mb-6 text-black/20" strokeWidth={1.5} />
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3">Guidelines</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight mb-4">Business Safety Guidelines</h1>
+        <p className="text-black/60">Best practices for running a safe and successful business on our platform</p>
       </div>
 
       <div className="space-y-8">
         {/* Safe Business Practices */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Safe Business Practices</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Safe Business Practices</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Provide accurate and honest product/service descriptions</li>
                 <li>• Keep your business address and contact information up to date</li>
                 <li>• Respond to customer inquiries promptly and professionally</li>
@@ -32,12 +31,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Customer Interactions */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <Users className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Customer Interactions</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Customer Interactions</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Always meet customers at your registered business address</li>
                 <li>• Verify customer identity before providing products or services</li>
                 <li>• Keep communication professional and respectful</li>
@@ -50,12 +49,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Data Protection */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <Lock className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Data & Privacy Protection</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Data & Privacy Protection</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Never share your password or account credentials</li>
                 <li>• Protect customer information and respect their privacy</li>
                 <li>• Use strong, unique passwords for your account</li>
@@ -68,12 +67,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Financial Security */}
-        <Card className="p-8">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <FileText className="w-6 h-6 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl mb-3">Financial Security</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Financial Security</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• All transactions must go through the platform</li>
                 <li>• Never accept cash or external payments</li>
                 <li>• Monitor your bank balance regularly</li>
@@ -86,12 +85,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Red Flags */}
-        <Card className="p-8 bg-red-50 border-red-200">
+        <Card className="p-8 bg-red-50 border border-red-200 rounded-3xl shadow-sm">
           <div className="flex gap-4 mb-4">
             <AlertTriangle className="w-6 h-6 flex-shrink-0 text-red-600" />
             <div>
-              <h2 className="text-2xl mb-3">Red Flags to Watch For</h2>
-              <ul className="space-y-3 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tighter mb-3">Red Flags to Watch For</h2>
+              <ul className="space-y-3 text-black/60">
                 <li>• Customers requesting off-platform communication or payment</li>
                 <li>• Unusual or suspicious customer behavior</li>
                 <li>• Requests for personal information beyond what's necessary</li>
@@ -104,12 +103,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Quality Standards */}
-        <Card className="p-8">
-          <h2 className="text-2xl mb-4">Quality Standards</h2>
-          <p className="text-gray-600 mb-4">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Quality Standards</h2>
+          <p className="text-black/60 mb-4">
             To maintain a high-quality marketplace, all businesses must adhere to these standards:
           </p>
-          <ul className="space-y-2 text-gray-600">
+          <ul className="space-y-2 text-black/60">
             <li>• Deliver products and services as described</li>
             <li>• Maintain cleanliness and proper safety measures</li>
             <li>• Respect appointment times and commitments</li>
@@ -121,12 +120,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Verification Benefits */}
-        <Card className="p-8 bg-blue-50 border-blue-200">
-          <h2 className="text-2xl mb-4">Verification Benefits</h2>
-          <p className="text-gray-600 mb-4">
+        <Card className="p-8 bg-blue-50 border border-blue-200 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Verification Benefits</h2>
+          <p className="text-black/60 mb-4">
             Verified businesses receive:
           </p>
-          <ul className="space-y-2 text-gray-600">
+          <ul className="space-y-2 text-black/60">
             <li>• Blue checkmark badge on your profile</li>
             <li>• Higher visibility in search results</li>
             <li>• Increased customer trust and credibility</li>
@@ -136,12 +135,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Reporting */}
-        <Card className="p-8">
-          <h2 className="text-2xl mb-4">Report Issues</h2>
-          <p className="text-gray-600 mb-4">
+        <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Report Issues</h2>
+          <p className="text-black/60 mb-4">
             If you encounter any safety issues, suspicious behavior, or need assistance:
           </p>
-          <div className="space-y-2 text-gray-600">
+          <div className="space-y-2 text-black/60">
             <p>Emergency: Contact local authorities first</p>
             <p>Platform Issues: business-safety@biznextdoor.com</p>
             <p>Response time: Within 24 hours</p>
@@ -149,12 +148,12 @@ export default function BusinessSafety() {
         </Card>
 
         {/* Legal Compliance */}
-        <Card className="p-8 bg-gray-50">
-          <h2 className="text-2xl mb-4">Legal Compliance</h2>
-          <p className="text-gray-600">
+        <Card className="p-8 bg-black/5 border border-black/5 rounded-3xl shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tighter mb-4">Legal Compliance</h2>
+          <p className="text-black/60">
             As a business on BizNextDoor, you are responsible for:
           </p>
-          <ul className="space-y-2 text-gray-600 mt-4">
+          <ul className="space-y-2 text-black/60 mt-4">
             <li>• Obtaining necessary business licenses and permits</li>
             <li>• Complying with local, state, and federal regulations</li>
             <li>• Paying applicable taxes on your income</li>

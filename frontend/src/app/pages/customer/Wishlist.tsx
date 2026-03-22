@@ -27,13 +27,16 @@ export default function Wishlist() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-4xl tracking-tight mb-8">Wishlist</h1>
+      <div className="mb-12">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Saved items</p>
+        <h1 className="text-5xl font-bold tracking-tighter leading-tight">Wishlist</h1>
+      </div>
 
       {allWishlistItems.length === 0 ? (
         <Card className="p-16 text-center">
-          <Heart className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+          <Heart className="w-16 h-16 mx-auto mb-4 text-black/20" />
           <h2 className="text-2xl mb-2">Your wishlist is empty</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-black/60 mb-6">
             Start adding products and services you love
           </p>
           <Link to="/customer/discover">
@@ -63,7 +66,7 @@ export default function Wishlist() {
 
               <div className="p-4">
                 <h3 className="mb-1 line-clamp-1">{item.name}</h3>
-                <p className="text-sm text-gray-500 mb-2">{item.businessName}</p>
+                <p className="text-sm text-black/40 mb-2">{item.businessName}</p>
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-medium">${item.price}</p>
                   <div className="flex items-center gap-1 text-sm">

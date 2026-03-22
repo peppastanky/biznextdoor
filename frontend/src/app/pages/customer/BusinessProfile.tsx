@@ -75,12 +75,12 @@ export default function BusinessProfile() {
           </div>
           <div className="col-span-2">
             <div className="flex items-start gap-3 mb-4">
-              <h1 className="text-4xl">{business.name}</h1>
+              <h1 className="text-5xl font-bold tracking-tighter leading-tight">{business.name}</h1>
               {business.verified && (
                 <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0" />
               )}
             </div>
-            <p className="text-lg text-gray-600 mb-6">{business.description}</p>
+            <p className="text-lg text-black/60 mb-6">{business.description}</p>
             <div className="flex items-center gap-6 mb-6">
               <button
                 onClick={() => setReviewsOpen(true)}
@@ -88,7 +88,7 @@ export default function BusinessProfile() {
               >
                 <Star className="w-5 h-5 fill-black" />
                 <span className="font-medium">{business.rating}</span>
-                <span className="text-gray-500">({business.reviews} reviews)</span>
+                <span className="text-black/40">({business.reviews} reviews)</span>
               </button>
               {business.verified && (
                 <div className="flex items-center gap-2 text-blue-600">
@@ -97,7 +97,7 @@ export default function BusinessProfile() {
                 </div>
               )}
             </div>
-            <div className="flex items-start gap-2 text-gray-600">
+            <div className="flex items-start gap-2 text-black/60">
               <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <span>{business.address}</span>
             </div>
@@ -107,7 +107,7 @@ export default function BusinessProfile() {
 
       {/* Products and Services */}
       <Tabs defaultValue="products">
-        <TabsList className="mb-8">
+        <TabsList className="bg-black/5 p-2 rounded-full mb-8">
           <TabsTrigger value="products">
             Products ({businessProducts.length})
           </TabsTrigger>
@@ -118,7 +118,7 @@ export default function BusinessProfile() {
 
         <TabsContent value="products">
           {businessProducts.length === 0 ? (
-            <Card className="p-12 text-center text-gray-500">
+            <Card className="p-12 text-center text-black/40">
               No products available
             </Card>
           ) : (
@@ -148,7 +148,7 @@ export default function BusinessProfile() {
 
         <TabsContent value="services">
           {businessServices.length === 0 ? (
-            <Card className="p-12 text-center text-gray-500">
+            <Card className="p-12 text-center text-black/40">
               No services available
             </Card>
           ) : (
