@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
@@ -6,6 +7,10 @@ import { CheckCircle2, Package, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Orders() {
+  const [searchParams] = useSearchParams();
+  const highlightId = searchParams.get("order");
+  const orderRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   const [orders, setOrders] = useState([
     {
       id: "o1",
@@ -53,6 +58,36 @@ export default function Orders() {
     },
   ]);
 
+  // Auto-switch to the right tab and scroll to the highlighted order
+  const defaultTab = () => {
+    if (highlightId) {
+      const match = orders.find((o) => o.id === highlightId);
+      if (match?.type === "product") return "products";
+      if (match?.type === "service") return "services";
+    }
+    return "all";
+  };
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
+  // Switch to the correct tab whenever the order param changes
+  useEffect(() => {
+    if (!highlightId) return;
+    const match = orders.find((o) => o.id === highlightId);
+    if (match?.type === "product") setActiveTab("products");
+    else if (match?.type === "service") setActiveTab("services");
+    else setActiveTab("all");
+  }, [highlightId]);
+
+  // Scroll after the tab content has rendered
+  useEffect(() => {
+    if (!highlightId) return;
+    const timer = setTimeout(() => {
+      const el = orderRefs.current[highlightId];
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [highlightId, activeTab]);
+
   const handleFulfill = (orderId: string) => {
     setOrders(orders.filter((o) => o.id !== orderId));
     toast.success("Order marked as fulfilled");
@@ -68,7 +103,7 @@ export default function Orders() {
         <h1 className="text-5xl font-bold tracking-tighter leading-tight">Orders</h1>
       </div>
 
-      <Tabs defaultValue="all">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-black/5 p-2 rounded-full mb-8">
           <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm px-6">All Orders ({orders.length})</TabsTrigger>
           <TabsTrigger value="products" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm px-6">Products ({productOrders.length})</TabsTrigger>
@@ -87,7 +122,7 @@ export default function Orders() {
               {orders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
+                  <Card key={order.id} ref={(el) => { orderRefs.current[order.id] = el as HTMLDivElement | null; }} className={`p-6 border rounded-3xl shadow-sm transition-all duration-300 ${highlightId === order.id ? "border-black ring-2 ring-black bg-black/3" : "border-black/5"}`}>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-3">
@@ -148,7 +183,7 @@ export default function Orders() {
               {productOrders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
+                  <Card key={order.id} ref={(el) => { orderRefs.current[order.id] = el as HTMLDivElement | null; }} className={`p-6 border rounded-3xl shadow-sm transition-all duration-300 ${highlightId === order.id ? "border-black ring-2 ring-black bg-black/3" : "border-black/5"}`}>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg mb-3">{order.item}</h3>
@@ -202,7 +237,7 @@ export default function Orders() {
               {serviceOrders
                 .sort((a, b) => new Date(a.date + " " + a.timeslot).getTime() - new Date(b.date + " " + b.timeslot).getTime())
                 .map((order) => (
-                  <Card key={order.id} className="p-6 border border-black/5 rounded-3xl shadow-sm">
+                  <Card key={order.id} ref={(el) => { orderRefs.current[order.id] = el as HTMLDivElement | null; }} className={`p-6 border rounded-3xl shadow-sm transition-all duration-300 ${highlightId === order.id ? "border-black ring-2 ring-black bg-black/3" : "border-black/5"}`}>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg mb-3">{order.item}</h3>

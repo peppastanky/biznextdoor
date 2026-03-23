@@ -57,6 +57,8 @@ export default function CustomerHome() {
 
   const dayItems = scheduleItems.filter(item => isSameDay(parseISO(item.date), selectedDate));
 
+  const scheduledDates = scheduleItems.map(item => parseISO(item.date));
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-24">
       {/* Calendar and Timeline */}
@@ -72,6 +74,20 @@ export default function CustomerHome() {
             selected={selectedDate}
             onSelect={(date) => date && setSelectedDate(date)}
             className="rounded-xl"
+            modifiers={{ scheduled: scheduledDates }}
+            components={{
+              DayContent: ({ date, ...props }) => {
+                const hasItems = scheduledDates.some(d => isSameDay(d, date));
+                return (
+                  <div className="relative flex flex-col items-center">
+                    <span>{date.getDate()}</span>
+                    {hasItems && (
+                      <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-black" />
+                    )}
+                  </div>
+                );
+              },
+            }}
           />
         </Card>
 

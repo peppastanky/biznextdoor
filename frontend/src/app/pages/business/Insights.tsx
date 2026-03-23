@@ -51,7 +51,7 @@ export default function Insights() {
     {
       name: "Pedicure Service",
       revenue: 1120,
-      quantity: 32,
+      quantity: 30,
       customers: 30,
       satisfaction: 4.8,
       viewRate: 78,

@@ -1,18 +1,28 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { Upload, X } from "lucide-react";
+import { Calendar } from "../../components/ui/calendar";
+import { Upload, X, Package, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { format, isSameDay } from "date-fns";
 import { categories } from "../../data/mockData";
+
+const TIME_SLOTS = [
+  "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM",
+  "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM",
+  "12:00 AM",
+];
 
 export default function CreateListing() {
   const navigate = useNavigate();
-  const [listingType, setListingType] = useState<"product" | "service" | null>(null);
+  const [searchParams] = useSearchParams();
+  const listingType = searchParams.get("type") as "product" | "service" | null;
   const [images, setImages] = useState<File[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -20,8 +30,9 @@ export default function CreateListing() {
     category: "",
     quantity: "",
     price: "",
-    timeslots: [""],
   });
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [dateSlots, setDateSlots] = useState<Record<string, string[]>>({});
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setImages([...images, ...Array.from(e.target.files)]);
@@ -33,17 +44,22 @@ export default function CreateListing() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const addTimeslot = () => setFormData({ ...formData, timeslots: [...formData.timeslots, ""] });
-
-  const updateTimeslot = (index: number, value: string) => {
-    const newTimeslots = [...formData.timeslots];
-    newTimeslots[index] = value;
-    setFormData({ ...formData, timeslots: newTimeslots });
+  const toggleSlot = (date: Date, slot: string) => {
+    const key = format(date, "yyyy-MM-dd");
+    setDateSlots((prev) => {
+      const current = prev[key] ?? [];
+      const updated = current.includes(slot)
+        ? current.filter((s) => s !== slot)
+        : [...current, slot];
+      if (updated.length === 0) {
+        const { [key]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [key]: updated };
+    });
   };
 
-  const removeTimeslot = (index: number) => {
-    setFormData({ ...formData, timeslots: formData.timeslots.filter((_, i) => i !== index) });
-  };
+  const datesWithSlots = Object.keys(dateSlots).map((d) => new Date(d));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,21 +75,26 @@ export default function CreateListing() {
       </div>
 
       {!listingType ? (
-        <div className="space-y-4">
-          <p className="text-black/60 mb-6">What would you like to list?</p>
+        <div className="grid grid-cols-2 gap-6">
           <button
-            className="w-full p-8 border border-black/8 rounded-3xl text-left hover:bg-black/5 transition-all duration-300 group"
-            onClick={() => setListingType("product")}
+            className="aspect-square bg-black/5 rounded-3xl border-2 border-transparent hover:border-black transition-all duration-300 group flex items-center justify-start px-12"
+            onClick={() => navigate("/business/create-listing?type=product")}
           >
-            <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Physical item</p>
-            <p className="text-2xl font-bold tracking-tighter">Product</p>
+            <div className="text-left">
+              <Package className="w-14 h-14 text-black/30 mb-8 group-hover:text-black/50 transition-colors" strokeWidth={1.5} />
+              <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Physical item</p>
+              <p className="text-4xl font-bold tracking-tighter">Product</p>
+            </div>
           </button>
           <button
-            className="w-full p-8 border border-black/8 rounded-3xl text-left hover:bg-black/5 transition-all duration-300 group"
-            onClick={() => setListingType("service")}
+            className="aspect-square border-2 border-black/8 rounded-3xl hover:border-black transition-all duration-300 group flex items-center justify-start px-12"
+            onClick={() => navigate("/business/create-listing?type=service")}
           >
-            <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Appointment based</p>
-            <p className="text-2xl font-bold tracking-tighter">Service</p>
+            <div className="text-left">
+              <Sparkles className="w-14 h-14 text-black/30 mb-8 group-hover:text-black/50 transition-colors" strokeWidth={1.5} />
+              <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-2">Appointment based</p>
+              <p className="text-4xl font-bold tracking-tighter">Service</p>
+            </div>
           </button>
         </div>
       ) : (
@@ -140,34 +161,112 @@ export default function CreateListing() {
             </div>
           </Card>
 
-          {/* Timeslots */}
+          {/* Schedule */}
           <Card className="p-8 border border-black/5 rounded-3xl shadow-sm">
-            <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold tracking-tighter mb-1">
+              {listingType === "product" ? "Collection Schedule" : "Service Schedule"}
+            </h2>
+            <p className="text-xs text-black/40 mb-6">Select dates and available time slots</p>
+
+            <div className="grid grid-cols-2 gap-8">
+              {/* Calendar */}
               <div>
-                <h2 className="text-2xl font-bold tracking-tighter">{listingType === "product" ? "Collection Timeslots" : "Available Timeslots"}</h2>
-                <p className="text-xs text-black/40 mt-1">e.g. 10:00 AM</p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-4">Pick a date</p>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  className="rounded-xl"
+                  modifiers={{ hasSlots: datesWithSlots }}
+                  components={{
+                    DayContent: ({ date }) => {
+                      const hasSlots = datesWithSlots.some((d) => isSameDay(d, date));
+                      return (
+                        <div className="relative flex flex-col items-center">
+                          <span>{date.getDate()}</span>
+                          {hasSlots && (
+                            <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-black" />
+                          )}
+                        </div>
+                      );
+                    },
+                  }}
+                />
               </div>
-              <Button type="button" onClick={addTimeslot} className="rounded-full bg-black text-white hover:bg-black/90 px-5">
-                Add Slot
-              </Button>
+
+              {/* Time slots */}
+              <div>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-4">
+                  {selectedDate ? `Times for ${format(selectedDate, "MMM d, yyyy")}` : "Select a date first"}
+                </p>
+                {selectedDate ? (
+                  <div className="grid grid-cols-3 gap-2">
+                    {TIME_SLOTS.map((slot) => {
+                      const key = format(selectedDate, "yyyy-MM-dd");
+                      const isSelected = (dateSlots[key] ?? []).includes(slot);
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => toggleSlot(selectedDate, slot)}
+                          className={`py-2 px-3 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                            isSelected
+                              ? "bg-black text-white"
+                              : "bg-black/5 text-black/60 hover:bg-black/10"
+                          }`}
+                        >
+                          {slot}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-black/20 text-sm">
+                    No date selected
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="space-y-3">
-              {formData.timeslots.map((slot, index) => (
-                <div key={index} className="flex gap-3">
-                  <Input value={slot} onChange={(e) => updateTimeslot(index, e.target.value)} placeholder="e.g., 10:00 AM" required className="bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10 transition-all duration-300" />
-                  {formData.timeslots.length > 1 && (
-                    <Button type="button" variant="ghost" size="icon" onClick={() => removeTimeslot(index)} className="rounded-full hover:bg-black/5">
-                      <X className="w-4 h-4 text-black/40" />
-                    </Button>
-                  )}
+
+            {/* Summary */}
+            {Object.keys(dateSlots).length > 0 && (
+              <div className="mt-8 pt-6 border-t border-black/5">
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-4">Selected slots</p>
+                <div className="space-y-3">
+                  {Object.entries(dateSlots)
+                    .sort(([a], [b]) => a.localeCompare(b))
+                    .map(([dateKey, slots]) => (
+                      <div key={dateKey} className="flex items-start gap-4">
+                        <span className="text-sm font-bold w-28 shrink-0">
+                          {format(new Date(dateKey + "T00:00:00"), "MMM d, yyyy")}
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {slots.map((slot) => (
+                            <span
+                              key={slot}
+                              className="inline-flex items-center gap-1 bg-black/5 text-black/70 text-xs font-semibold px-3 py-1 rounded-full"
+                            >
+                              {slot}
+                              <button
+                                type="button"
+                                onClick={() => toggleSlot(new Date(dateKey + "T00:00:00"), slot)}
+                                className="text-black/30 hover:text-black ml-1"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </Card>
 
           {/* Submit */}
           <div className="flex gap-4">
-            <Button type="button" onClick={() => setListingType(null)} className="flex-1 rounded-full border border-black/10 bg-transparent text-black hover:bg-black/5">
+            <Button type="button" onClick={() => navigate(-1)} className="flex-1 rounded-full border border-black/10 bg-transparent text-black hover:bg-black/5">
               Back
             </Button>
             <Button type="submit" className="flex-1 rounded-full bg-black text-white hover:bg-black/90 py-6 transition-all duration-300 hover:scale-[1.02]">

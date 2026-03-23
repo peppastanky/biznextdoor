@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
+import { NavigationHistoryProvider } from "../context/NavigationHistoryContext";
 import { Button } from "../components/ui/button";
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ export default function BusinessLayout() {
   };
 
   return (
+    <NavigationHistoryProvider>
     <div className="min-h-screen bg-white">
       {/* Navbar with glassmorphism */}
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-black/5 z-50">
@@ -79,21 +81,21 @@ export default function BusinessLayout() {
                     <p className="text-[10px] uppercase tracking-widest font-bold text-black/40">Notifications</p>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
-                    <div className="p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300">
+                    <button onClick={() => navigate("/business/orders?order=o1")} className="w-full text-left p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300">
                       <p className="text-sm font-bold mb-1">New order received</p>
                       <p className="text-xs text-black/60 leading-relaxed">Customer ordered Chocolate Cake</p>
                       <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">1 hour ago</p>
-                    </div>
-                    <div className="p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300">
+                    </button>
+                    <button onClick={() => navigate("/business/orders?order=o2")} className="w-full text-left p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300">
                       <p className="text-sm font-bold mb-1">New order received</p>
                       <p className="text-xs text-black/60 leading-relaxed">Customer booked Gel Manicure</p>
                       <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">3 hours ago</p>
-                    </div>
-                    <div className="p-6 hover:bg-black/5 transition-all duration-300">
+                    </button>
+                    <button onClick={() => navigate("/business/profile?reviews=open")} className="w-full text-left p-6 hover:bg-black/5 transition-all duration-300">
                       <p className="text-sm font-bold mb-1">New review</p>
                       <p className="text-xs text-black/60 leading-relaxed">Customer left a 5-star review</p>
                       <p className="text-[10px] uppercase tracking-widest text-black/40 mt-2">1 day ago</p>
-                    </div>
+                    </button>
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -145,5 +147,6 @@ export default function BusinessLayout() {
         <Outlet />
       </main>
     </div>
+    </NavigationHistoryProvider>
   );
 }

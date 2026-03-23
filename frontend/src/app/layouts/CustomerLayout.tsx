@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
+import { NavigationHistoryProvider } from "../context/NavigationHistoryContext";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -40,11 +41,12 @@ export default function CustomerLayout() {
     ).slice(0, 3),
     businesses: mockBusinesses.filter(b =>
       b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (b.category && b.category.toLowerCase().includes(searchQuery.toLowerCase()))
+      b.description.toLowerCase().includes(searchQuery.toLowerCase())
     ).slice(0, 3),
   } : { products: [], services: [], businesses: [] };
 
   return (
+    <NavigationHistoryProvider>
     <div className="min-h-screen bg-white">
       {/* Navbar with glassmorphism */}
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-black/5 z-50">
@@ -161,7 +163,7 @@ export default function CustomerLayout() {
                           <img src={business.image} alt={business.name} className="w-12 h-12 object-cover rounded-xl" />
                           <div className="flex-1">
                             <p className="text-sm font-bold">{business.name}</p>
-                            <p className="text-xs text-black/40">{business.category}</p>
+                            <p className="text-xs text-black/40">{business.description}</p>
                           </div>
                         </button>
                       ))}
@@ -239,7 +241,7 @@ export default function CustomerLayout() {
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     <button
-                      onClick={() => navigate("/customer/product/p1")}
+                      onClick={() => navigate("/customer/my-orders?tab=collect&order=p1")}
                       className="w-full text-left p-6 hover:bg-black/5 border-b border-black/5 transition-all duration-300 flex items-start gap-3"
                     >
                       <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center shrink-0 mt-0.5">
@@ -252,7 +254,7 @@ export default function CustomerLayout() {
                       </div>
                     </button>
                     <button
-                      onClick={() => navigate("/customer/service/s1")}
+                      onClick={() => navigate("/customer/my-orders?tab=services&order=s1")}
                       className="w-full text-left p-6 hover:bg-black/5 transition-all duration-300 flex items-start gap-3"
                     >
                       <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center shrink-0 mt-0.5">
@@ -319,5 +321,6 @@ export default function CustomerLayout() {
         <Outlet />
       </main>
     </div>
+    </NavigationHistoryProvider>
   );
 }
