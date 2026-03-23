@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
+import ScrollToTop from "../components/ScrollToTop";
 import { NavigationHistoryProvider } from "../context/NavigationHistoryContext";
 import { Button } from "../components/ui/button";
 import {
@@ -143,6 +144,7 @@ export default function BusinessLayout() {
 
       {/* Main Content */}
       <main className="pt-[73px]">
+        <ScrollToTop />
         <BackButton />
         <Outlet />
       </main>
