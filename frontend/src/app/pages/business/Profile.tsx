@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../componen
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { Wallet, MapPin, CheckCircle2, Star } from "lucide-react";
 import { useUser } from "../../context/UserContext";
+import BusinessWithdrawDialog from "../../components/BusinessWithdrawDialog";
 
 const mockReviews = [
   { id: "r1", author: "john_doe",    rating: 5, text: "Absolutely amazing! Best in town.",              date: "2026-03-10" },
@@ -19,6 +20,7 @@ export default function BusinessProfilePage() {
   const { user } = useUser();
   const [searchParams] = useSearchParams();
   const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [sortBy, setSortBy] = useState("newest");
 
   // Open reviews dialog if URL contains ?reviews=open
@@ -91,7 +93,7 @@ export default function BusinessProfilePage() {
           <p className="text-4xl">${user?.bank?.toFixed(2) || "0.00"}</p>
           <p className="text-black/60 pb-1">Available Balance</p>
         </div>
-        <Button>Withdraw Funds</Button>
+        <Button onClick={() => setWithdrawOpen(true)}>Withdraw Funds</Button>
       </Card>
 
       {/* Transaction History */}
@@ -173,6 +175,8 @@ export default function BusinessProfilePage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <BusinessWithdrawDialog open={withdrawOpen} onClose={() => setWithdrawOpen(false)} />
     </div>
   );
 }
