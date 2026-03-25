@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../components/ui/dialog";
-import { Wallet, Star, Pencil, CheckCircle } from "lucide-react";
+import { Input } from "../../components/ui/input";
+import { Wallet, Star, Pencil, CheckCircle, Loader2 } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import { useReviews } from "../../context/ReviewContext";
 import { useNavigate } from "react-router";
 import { mockProducts, mockServices } from "../../data/mockData";
+import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "sonner";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const SERVER_BASE = "https://biznextdoor.onrender.com";
 
 export default function Profile() {
-  const { user } = useUser();
+  const { user, updateWallet } = useUser();
   const navigate = useNavigate();
   const { reviews, addReview } = useReviews();
 
@@ -19,11 +25,78 @@ export default function Profile() {
   const [reviewText, setReviewText] = useState("");
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
+  // Top-up state
+  const [topUpOpen, setTopUpOpen] = useState(false);
+  const [topUpAmount, setTopUpAmount] = useState("");
+  const [topUpStep, setTopUpStep] = useState<"amount" | "qr" | "success">("amount");
+  const [qrImage, setQrImage] = useState<string | null>(null);
+  const [topUpLoading, setTopUpLoading] = useState(false);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const purchaseHistory = [
     { ...mockProducts[0], date: "2026-03-15", type: "product" },
     { ...mockServices[0], date: "2026-03-10", type: "service" },
     { ...mockProducts[1], date: "2026-03-05", type: "product" },
   ];
+
+  async function handleTopUp() {
+    const amount = parseFloat(topUpAmount);
+    if (!amount || amount < 1) {
+      toast.error("Minimum top-up is $1");
+      return;
+    }
+    setTopUpLoading(true);
+    try {
+      const res = await fetch(`${SERVER_BASE}/create-paynow-intent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      const stripe = await stripePromise;
+      if (!stripe) throw new Error("Stripe failed to load");
+
+      const { paymentIntent, error } = await stripe.confirmPayNowPayment(data.clientSecret, {
+        payment_method: {},
+      });
+      if (error) throw new Error(error.message);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const qrUrl = (paymentIntent as any)?.next_action?.paynow_display_qr_code?.image_url_png;
+      setQrImage(qrUrl || null);
+      setTopUpStep("qr");
+
+      // Poll for payment confirmation
+      pollingRef.current = setInterval(async () => {
+        const statusRes = await fetch(`${SERVER_BASE}/check-payment-status`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentIntentId: data.paymentIntentId }),
+        });
+        const statusData = await statusRes.json();
+        if (statusData.status === "succeeded") {
+          clearInterval(pollingRef.current!);
+          updateWallet(amount);
+          setTopUpStep("success");
+        }
+      }, 3000);
+    } catch (err) {
+      const e = err as Error;
+      toast.error(e.message || "Top-up failed");
+    } finally {
+      setTopUpLoading(false);
+    }
+  }
+
+  function closeTopUp() {
+    if (pollingRef.current) clearInterval(pollingRef.current);
+    setTopUpOpen(false);
+    setTopUpStep("amount");
+    setTopUpAmount("");
+    setQrImage(null);
+  }
 
   function openReview(id: string, name: string, type: string) {
     setReviewTarget({ id, name, type });
@@ -88,11 +161,92 @@ export default function Profile() {
             <p className="text-black/60 pb-1">Available Balance</p>
           </div>
           <div className="flex gap-3">
-            <Button>Top Up</Button>
+            <Button onClick={() => setTopUpOpen(true)}>Top Up</Button>
             <Button variant="outline">Withdraw</Button>
           </div>
         </Card>
       </div>
+
+      {/* Top Up Dialog */}
+      <Dialog open={topUpOpen} onOpenChange={(o) => { if (!o) closeTopUp(); }}>
+        <DialogContent className="rounded-3xl border-black/5 max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold tracking-tighter">
+              {topUpStep === "success" ? "Top Up Successful" : "Top Up Wallet"}
+            </DialogTitle>
+          </DialogHeader>
+
+          {topUpStep === "amount" && (
+            <div className="space-y-6 pt-2">
+              <div>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-3">Amount (SGD)</p>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40 font-medium">$</span>
+                  <Input
+                    type="number"
+                    min="1"
+                    placeholder="0.00"
+                    value={topUpAmount}
+                    onChange={(e) => setTopUpAmount(e.target.value)}
+                    className="pl-8 bg-black/5 border-none rounded-xl p-3 focus:ring-2 focus:ring-black/10"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {[10, 20, 50, 100].map((preset) => (
+                  <button
+                    key={preset}
+                    onClick={() => setTopUpAmount(String(preset))}
+                    className="flex-1 py-2 rounded-xl bg-black/5 text-sm font-semibold hover:bg-black hover:text-white transition-all duration-200"
+                  >
+                    ${preset}
+                  </button>
+                ))}
+              </div>
+              <Button
+                className="w-full rounded-full"
+                onClick={handleTopUp}
+                disabled={topUpLoading}
+              >
+                {topUpLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Continue with PayNow"}
+              </Button>
+            </div>
+          )}
+
+          {topUpStep === "qr" && (
+            <div className="space-y-6 pt-2 text-center">
+              <p className="text-sm text-black/60">Scan this QR code with your banking app to pay <span className="font-bold text-black">${topUpAmount}</span> via PayNow.</p>
+              {qrImage ? (
+                <img src={qrImage} alt="PayNow QR" className="mx-auto w-48 h-48 rounded-2xl" />
+              ) : (
+                <div className="mx-auto w-48 h-48 rounded-2xl bg-black/5 flex items-center justify-center">
+                  <Loader2 className="w-8 h-8 animate-spin text-black/30" />
+                </div>
+              )}
+              <p className="text-xs text-black/40">Waiting for payment confirmation...</p>
+              <div className="flex justify-center gap-1">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className="w-1.5 h-1.5 rounded-full bg-black/20 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {topUpStep === "success" && (
+            <div className="space-y-4 pt-2 text-center">
+              <div className="flex justify-center">
+                <CheckCircle className="w-16 h-16 text-black" strokeWidth={1.5} />
+              </div>
+              <p className="text-black/60">
+                <span className="font-bold text-black">${topUpAmount}</span> has been added to your wallet.
+              </p>
+              <p className="text-2xl font-bold tracking-tighter">${user?.wallet?.toFixed(2)}</p>
+              <p className="text-xs text-black/40">New Balance</p>
+              <Button className="w-full rounded-full mt-4" onClick={closeTopUp}>Done</Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Purchase History - Products */}
       <div className="mb-8">
