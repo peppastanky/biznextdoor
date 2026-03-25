@@ -68,7 +68,7 @@ export default function Registration() {
         type: userType,
         businessName: userType === "business" ? formData.businessName : undefined,
         wallet: userType === "customer" ? 500 : undefined,
-        bank: userType === "business" ? 0 : undefined,
+        bank: userType === "business" ? 167 : undefined,
       };
 
       login(newUser);
