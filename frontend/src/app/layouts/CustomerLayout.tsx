@@ -1,6 +1,7 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
 import ScrollToTop from "../components/ScrollToTop";
+import Footer from "../components/Footer";
 import { NavigationHistoryProvider } from "../context/NavigationHistoryContext";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
@@ -322,6 +323,7 @@ export default function CustomerLayout() {
         <BackButton />
         <Outlet />
       </main>
+      <Footer />
     </div>
     </NavigationHistoryProvider>
   );
