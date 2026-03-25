@@ -1,19 +1,28 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { DollarSign, Users, Eye, MousePointer, TrendingUp, Star, Send, Bot } from "lucide-react";
+import { DollarSign, Users, Eye, TrendingUp, Star, Send, Bot, Loader2 } from "lucide-react";
+
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 export default function Insights() {
   const [chatMessages, setChatMessages] = useState([
     {
       role: "assistant",
-      content: "Hello! I'm your AI business assistant. I can help you analyze your insights and answer questions about your performance. How can I help you today?",
+      content: "Hi! I'm your AI business assistant. Ask me anything about your revenue, customers, top products, or how to improve your performance.",
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
 
   const revenueData = [
     { month: "Jan", revenue: 8500 },
@@ -60,38 +69,57 @@ export default function Insights() {
     },
   ];
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const businessContext = `
+You are an AI business assistant for a small business on BizNextDoor, a local neighbourhood marketplace.
+Here is the business's current data:
 
-    setChatMessages([
-      ...chatMessages,
-      { role: "user", content: inputMessage },
-    ]);
+REVENUE:
+- Jan: $8,500 | Feb: $9,200 | Mar: $12,450 (total this quarter: $30,150, +18%)
 
-    // Simulate AI response
-    setTimeout(() => {
-      let response = "";
-      const lowerInput = inputMessage.toLowerCase();
+CUSTOMERS:
+- Total: 234 | New this month: 68 | Returning: 42% rate
 
-      if (lowerInput.includes("revenue") || lowerInput.includes("sales")) {
-        response = "Your revenue this month is $12,450, which is a 15% increase from last month. Your best-selling item is Chocolate Cake, generating $1,575 in revenue. Keep up the great work!";
-      } else if (lowerInput.includes("customer") || lowerInput.includes("retention")) {
-        response = "You have 234 total customers with a 42% returning customer rate. This is a 5% improvement from last month! Consider implementing a loyalty program to boost retention further.";
-      } else if (lowerInput.includes("improve") || lowerInput.includes("better")) {
-        response = "Based on your data, I recommend: 1) Increase your Gel Manicure availability (81% conversion rate), 2) Promote your products with high view rates but lower conversion, 3) Focus on customer reviews to boost your 4.9 rating.";
-      } else if (lowerInput.includes("best") || lowerInput.includes("top")) {
-        response = "Your top performer is Gel Manicure with an 81% conversion rate and 92% view rate. Chocolate Cake leads in total revenue at $1,575. Both items have excellent 4.9 satisfaction ratings.";
-      } else {
-        response = "I can provide insights on your revenue, customer metrics, conversion rates, and recommendations for improvement. What specific aspect would you like to explore?";
-      }
+PROFILE:
+- Visits: 1,845 (+12% this month) | Conversion rate: 68% (+3%)
 
-      setChatMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: response },
-      ]);
-    }, 1000);
+TOP PRODUCTS:
+1. Chocolate Cake — $1,575 revenue, 45 sold, 4.9★, 72% conversion, 85% view rate
+2. Gel Manicure — $1,520 revenue, 38 sold, 4.9★, 81% conversion, 92% view rate
+3. Pedicure Service — $1,120 revenue, 30 sold, 4.8★, 65% conversion, 78% view rate
 
+Be concise, friendly, and actionable. Keep responses under 4 sentences. Focus on practical advice.
+`;
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || aiLoading) return;
+    const userMsg = inputMessage.trim();
     setInputMessage("");
+    setChatMessages((prev) => [...prev, { role: "user", content: userMsg }]);
+    setAiLoading(true);
+
+    try {
+      const history = chatMessages.map((m) => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }],
+      }));
+
+      const res = await fetch(GEMINI_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: businessContext }] },
+          contents: [...history, { role: "user", parts: [{ text: userMsg }] }],
+        }),
+      });
+
+      const data = await res.json();
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response. Try again.";
+      setChatMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+    } catch {
+      setChatMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   return (
@@ -228,38 +256,42 @@ export default function Insights() {
         <div className="border border-black/5 rounded-3xl overflow-hidden mb-4">
           <div className="h-96 overflow-y-auto p-6 space-y-4 bg-black/5">
             {chatMessages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] p-4 rounded-lg ${
-                    message.role === "user"
-                      ? "bg-black text-white"
-                      : "bg-white border border-black/5"
-                  }`}
-                >
-                  <p className="text-sm">{message.content}</p>
+              <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed ${
+                  message.role === "user" ? "bg-black text-white" : "bg-white border border-black/5"
+                }`}>
+                  {message.content}
                 </div>
               </div>
             ))}
+            {aiLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white border border-black/5 p-4 rounded-2xl flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-black/30" />
+                  <span className="text-sm text-black/40">Thinking...</span>
+                </div>
+              </div>
+            )}
+            <div ref={chatEndRef} />
           </div>
 
           <div className="flex gap-3 p-4 bg-white border-t border-black/5">
             <Input
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="Ask about your business insights..."
+              disabled={aiLoading}
+              className="bg-black/5 border-none rounded-full focus:ring-2 focus:ring-black/10"
             />
-            <Button onClick={handleSendMessage}>
+            <Button onClick={handleSendMessage} disabled={aiLoading} className="rounded-full">
               <Send className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
         <p className="text-xs text-black/40 text-center">
-          Try asking: "How's my revenue?", "What are my best products?", or "How can I improve?"
+          Powered by Gemini · Try: "How's my revenue?", "What should I improve?", "Who are my best customers?"
         </p>
       </Card>
     </div>

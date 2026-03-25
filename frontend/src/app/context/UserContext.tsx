@@ -30,7 +30,7 @@ function firebaseUserToAppUser(firebaseUser: FirebaseUser, overrides?: Partial<U
     type: overrides?.type || "customer",
     businessName: overrides?.businessName,
     wallet: overrides?.type === "customer" ? (overrides?.wallet ?? 500) : undefined,
-    bank: overrides?.type === "business" ? (overrides?.bank ?? 0) : undefined,
+    bank: overrides?.type === "business" ? (overrides?.bank ?? 167) : undefined,
   };
 }
 
